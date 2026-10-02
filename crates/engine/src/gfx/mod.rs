@@ -1,5 +1,9 @@
 //! Graphics: everything between the game's draw calls and the pixels on screen.
 
 mod color;
+// The renderer that uses the batch arrives in Task 6; until then only the tests do.
+#[allow(dead_code)]
+mod shapes;
 
 pub use color::Color;
+pub use shapes::Vertex;
