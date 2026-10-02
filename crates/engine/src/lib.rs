@@ -26,6 +26,7 @@ mod config;
 mod context;
 mod error;
 mod fps;
+mod gfx;
 mod input;
 mod pacing;
 mod platform;
@@ -34,6 +35,7 @@ mod time;
 pub use config::Config;
 pub use context::Context;
 pub use error::Error;
+pub use gfx::{Color, Gfx, Vertex};
 pub use input::{Input, Key, MouseButton};
 pub use time::Time;
 
@@ -54,12 +56,15 @@ pub trait Game {
 /// Opens a window and runs the game loop until the window closes.
 ///
 /// `make_game` runs once, after the window exists, and builds the game. It receives the
-/// [`Context`], so from M2 on the game can load its assets there.
+/// [`Context`], so the game can set up its renderer state (and, from M6 on, load its assets)
+/// there.
 ///
 /// # Errors
 ///
-/// Returns [`Error::EventLoop`] if the OS event loop cannot be created and [`Error::Window`] if
-/// the window cannot be opened.
+/// Returns [`Error::EventLoop`] if the OS event loop cannot be created, [`Error::Window`] if
+/// the window cannot be opened, and one of the GPU variants ([`Error::CreateSurface`],
+/// [`Error::RequestAdapter`], [`Error::RequestDevice`], [`Error::UnsupportedSurface`]) if the
+/// renderer cannot start.
 pub fn run<G, F>(config: Config, make_game: F) -> Result<(), Error>
 where
     G: Game,

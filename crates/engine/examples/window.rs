@@ -88,7 +88,7 @@ impl Game for WindowDemo {
     }
 
     fn draw(&mut self, _ctx: &mut Context) {
-        // Nothing to draw yet: the GPU arrives in M2.
+        // Nothing to draw: the engine clears the screen; see the triangle example for shapes.
     }
 }
 

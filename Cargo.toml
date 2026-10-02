@@ -29,6 +29,12 @@ log = "0.4"
 thiserror = "2"
 # A logger that prints `log` records to stderr, filtered by the RUST_LOG variable.
 env_logger = "0.11"
+# Safe, portable access to the GPU (Metal on macOS, Vulkan or GL on Linux, DX12 on Windows).
+wgpu = "30"
+# Runs an `async fn` to completion on the current thread; wgpu's setup functions are async.
+pollster = "0.4"
+# Safe casts between plain-old-data types and bytes, for uploading vertices to the GPU.
+bytemuck = { version = "1", features = ["derive"] }
 
 # Lints shared by all members; each member opts in with `[lints] workspace = true`.
 [workspace.lints.rust]

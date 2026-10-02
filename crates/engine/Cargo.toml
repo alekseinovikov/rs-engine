@@ -8,9 +8,12 @@ repository.workspace = true
 publish.workspace = true
 
 [dependencies]
+bytemuck.workspace = true
 ecs.workspace = true
 log.workspace = true
+pollster.workspace = true
 thiserror.workspace = true
+wgpu.workspace = true
 winit.workspace = true
 
 [dev-dependencies]
