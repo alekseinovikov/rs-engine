@@ -465,7 +465,7 @@ Expected: no formatting diff and no clippy warnings before the commit.
 - Produces: the binary `platformer`, which prints `engine::greeting()` and a newline to stdout and
   exits with status 0.
 
-- [ ] **Step 1: Register the package in the workspace**
+- [x] **Step 1: Register the package in the workspace**
 
 In `Cargo.toml`, replace
 
@@ -492,7 +492,7 @@ and in `[workspace.dependencies]`, add below the `ecs = ...` line:
 engine = { path = "crates/engine" }
 ```
 
-- [ ] **Step 2: Create the package with an empty `main`**
+- [x] **Step 2: Create the package with an empty `main`**
 
 Create `games/platformer/Cargo.toml`:
 
@@ -524,7 +524,7 @@ Create `games/platformer/src/main.rs`:
 fn main() {}
 ```
 
-- [ ] **Step 3: Write the failing integration test**
+- [x] **Step 3: Write the failing integration test**
 
 Create `games/platformer/tests/startup.rs`:
 
@@ -550,14 +550,14 @@ fn prints_the_engine_greeting() {
 }
 ```
 
-- [ ] **Step 4: Run the test to verify it fails**
+- [x] **Step 4: Run the test to verify it fails**
 
 Run: `cargo test -p platformer`
 
 Expected: `prints_the_engine_greeting` FAILS with ``assertion `left == right` failed``,
 `left: ""` and `right: "rs-engine 0.1.0 (ecs 0.1.0)"`.
 
-- [ ] **Step 5: Print the greeting**
+- [x] **Step 5: Print the greeting**
 
 In `games/platformer/src/main.rs`, replace `fn main() {}` with:
 
@@ -567,7 +567,7 @@ fn main() {
 }
 ```
 
-- [ ] **Step 6: Run the tests to verify they pass**
+- [x] **Step 6: Run the tests to verify they pass**
 
 Run: `cargo test -p platformer`
 Expected: `test prints_the_engine_greeting ... ok`.
@@ -575,7 +575,7 @@ Expected: `test prints_the_engine_greeting ... ok`.
 Run: `cargo run -p platformer`
 Expected output: `rs-engine 0.1.0 (ecs 0.1.0)`.
 
-- [ ] **Step 7: Full check and commit**
+- [x] **Step 7: Full check and commit**
 
 ```bash
 cargo fmt --all && cargo fmt --all --check

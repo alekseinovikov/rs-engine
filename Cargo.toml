@@ -5,6 +5,7 @@ resolver = "3"
 members = [
     "crates/ecs",
     "crates/engine",
+    "games/platformer",
 ]
 
 # Package metadata that members inherit with `key.workspace = true`.
@@ -19,6 +20,7 @@ publish = false
 # every version (or path) is written in exactly one place.
 [workspace.dependencies]
 ecs = { path = "crates/ecs" }
+engine = { path = "crates/engine" }
 
 # Lints shared by all members; each member opts in with `[lints] workspace = true`.
 [workspace.lints.rust]
