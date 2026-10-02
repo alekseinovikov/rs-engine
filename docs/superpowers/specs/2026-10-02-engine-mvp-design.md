@@ -138,6 +138,8 @@ every frame (paced by vsync):
 
 - Coordinate convention: world units are pixels of the virtual resolution; +x points right and
   +y points down, matching screen, texture and tilemap row order.
+- Colors: the API takes sRGB colors (`engine::Color`, as in image editors); the engine converts
+  them to linear on the CPU, the GPU blends in linear space, and the surface has an sRGB format.
 - Immediate-style API: `gfx.draw_sprite(...)`, `gfx.draw_rect(...)` and `gfx.draw_text(...)`
   collect instances for the current frame. Nothing is retained between frames.
 - One sprite pipeline for everything: a unit quad plus per-instance data (position, size,
@@ -356,3 +358,8 @@ Each one is resolved in the milestone named.
 | 2026-10-02 | `Config::max_fps` frame limiter (`ControlFlow::WaitUntil`, deadlines on a fixed grid) until vsync arrives in M2; it stays available afterwards. |
 | 2026-10-02 | The engine quits on Esc only with `Config::quit_on_escape` (default `true`); the game turns it off when Esc means pause. |
 | 2026-10-02 | Errors inside winit callbacks are stored in the app, the loop exits, and `engine::run` returns them. |
+| 2026-10-02 | The `gfx` module owns all wgpu code; the game draws through `ctx.gfx`. wgpu types appear in the public API only as wrapped sources of `engine::Error`. M2's clip-space `draw_triangle` / `draw_quad` are temporary until M3's world-space API. |
+| 2026-10-02 | `engine::Color` is sRGB with straight alpha, converted to linear on the CPU; the surface uses the first sRGB format it supports. |
+| 2026-10-02 | `Config::vsync` (default `true`, `AutoVsync` / `AutoNoVsync`) and `Gfx::set_vsync`; `max_fps` stays as an independent limiter. |
+| 2026-10-02 | `Context` is created in `resumed` together with the renderer; the window is an `Arc<Window>` shared with the surface. |
+| 2026-10-02 | wgpu validation errors panic (wgpu's default handler), because they are programmer errors. Skipped frames (hidden or minimized window) delay the next frame by 100 ms instead of spinning. |
