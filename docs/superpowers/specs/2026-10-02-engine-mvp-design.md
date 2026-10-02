@@ -158,8 +158,10 @@ and needs no lifetimes or `Rc`. Assets are cached by path and loaded synchronous
 starts. The asset root is the workspace `assets/` directory during development and `assets/` next
 to the executable in release builds. GPU textures are owned by the renderer; handles refer to them.
 
-**Input.** Keyboard: `is_down`, `just_pressed`, `just_released`, latched per tick (§4). Minimal
-mouse state. A small action map (for example `Jump` → Space, W or Up) for games.
+**Input.** Keyboard: `is_down`, `just_pressed`, `just_released`, latched per tick (§4). Keys are
+*physical* positions (WASD works with any layout) and use the engine's own `engine::Key` type;
+only `platform.rs` translates from winit. Minimal mouse state. A small action map (for example
+`Jump` → Space, W or Up) for games.
 
 **Time.** Fixed delta, real frame delta, elapsed time, FPS.
 
@@ -350,3 +352,7 @@ Each one is resolved in the milestone named.
 | 2026-10-02 | License: MIT OR Apache-2.0. Public GitHub repository `alekseinovikov/rs-engine`; CI on Ubuntu and macOS. |
 | 2026-10-02 | Workspace lints: `unsafe_code = "deny"` and `missing_docs = "warn"` in every crate. |
 | 2026-10-02 | Git workflow: one branch per milestone (`milestone/mN-<name>`), merged into `main` through a pull request with a merge commit; milestone tags go on the merge commits. |
+| 2026-10-02 | Keys are physical positions mapped to our own `engine::Key`; only `platform.rs` and `app.rs` (plus `error.rs` and `lib.rs`) see winit. |
+| 2026-10-02 | `Config::max_fps` frame limiter (`ControlFlow::WaitUntil`, deadlines on a fixed grid) until vsync arrives in M2; it stays available afterwards. |
+| 2026-10-02 | The engine quits on Esc only with `Config::quit_on_escape` (default `true`); the game turns it off when Esc means pause. |
+| 2026-10-02 | Errors inside winit callbacks are stored in the app, the loop exits, and `engine::run` returns them. |
