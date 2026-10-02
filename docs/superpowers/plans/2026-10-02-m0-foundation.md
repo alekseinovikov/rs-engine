@@ -747,7 +747,7 @@ git add .github/workflows/ci.yml docs/superpowers/plans/2026-10-02-m0-foundation
 git commit -m "Add CI for Linux and macOS" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ```
 
-- [ ] **Step 3: Create the GitHub repository and push both branches**
+- [x] **Step 3: Create the GitHub repository and push both branches**
 
 ```bash
 gh repo create alekseinovikov/rs-engine --public --description "A small 2D game engine in Rust, written from scratch for learning" --source . --remote origin
@@ -759,7 +759,7 @@ Expected: `✓ Created repository alekseinovikov/rs-engine on GitHub` and `✓ A
 pushes succeed. Pushing `main` starts no CI run, because so far the workflow file exists only on
 the milestone branch.
 
-- [ ] **Step 4: Open the pull request**
+- [x] **Step 4: Open the pull request**
 
 ````bash
 gh pr create --base main --head milestone/m0-foundation --title "M0: Foundation" --body-file - <<'EOF'
@@ -788,7 +788,7 @@ EOF
 Expected: the command prints the pull request URL. Opening the pull request starts the `CI`
 workflow (`pull_request` trigger).
 
-- [ ] **Step 5: Confirm that CI started**
+- [x] **Step 5: Confirm that CI started**
 
 Bind the pull request to the session and read its checks once: in the Claude desktop app with the
 PR tools (`get_status`, then `bind_pr` with the PR URL if the PR is not reported yet); elsewhere
@@ -807,7 +807,7 @@ with `gh pr checks milestone/m0-foundation`. Expected: the checks `Check (ubuntu
 - Produces: the M0 learning note; later notes follow the same structure (What we built, Key
   concepts, Where to look in the code, Experiments to try, Further reading).
 
-- [ ] **Step 1: Write the note**
+- [x] **Step 1: Write the note**
 
 Create `docs/learning/00-foundation.md`:
 
@@ -959,7 +959,7 @@ Sharing the ecosystem's license makes it easy to move code between projects.
 - [The list of clippy lints](https://rust-lang.github.io/rust-clippy/master/)
 ````
 
-- [ ] **Step 2: Commit and push**
+- [x] **Step 2: Commit and push**
 
 ```bash
 git add docs/learning/00-foundation.md docs/superpowers/plans/2026-10-02-m0-foundation.md
