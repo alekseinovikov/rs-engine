@@ -149,7 +149,7 @@ every frame (paced by vsync):
   separate screen-space mode is used for UI.
 - Pixel-perfect output: the scene renders into an offscreen texture at a virtual resolution
   (default 480×270). A second pass upscales it to the window by the largest integer factor that
-  fits and letterboxes the rest. Nearest-neighbour sampling everywhere.
+  fits and letterboxes the rest. Nearest-neighbor sampling everywhere.
 - Surface errors: `Lost` or `Outdated` → reconfigure the surface and skip the frame; `Timeout` →
   skip the frame; out of memory → exit with an error.
 
@@ -255,15 +255,15 @@ Each scene owns its data, including its own ECS `World`. Fade transitions betwee
 - Test-first for pure logic.
 - No GPU in automated tests. Every milestone ends with a runnable example or game state that the
   user checks by hand against the milestone's "done when" list.
-- CI on GitHub Actions, active once a remote exists: `cargo fmt --check`,
-  `cargo clippy --workspace --all-targets -- -D warnings`, `cargo test --workspace`, a build of
-  all targets. Ubuntu and macOS runners.
+- CI on GitHub Actions in the public repository `alekseinovikov/rs-engine`: `cargo fmt --check`,
+  `cargo clippy --workspace --all-targets -- -D warnings`, `cargo test --workspace` (which also
+  builds every example). Ubuntu and macOS runners.
 
 ## 9. Demo game: platformer
 
 - Three short levels in an ASCII format, one character per tile: `#` ground, `^` spikes, `o` coin,
   `E` enemy, `P` player start, `F` goal flag, `.` empty. The files are editable in any text editor,
-  and parse errors report the line and column. Ground tiles are autotiled from their neighbours.
+  and parse errors report the line and column. Ground tiles are autotiled from their neighbors.
 - Player: running with acceleration and deceleration, a variable-height jump, coyote time, jump
   buffering. Idle, run, jump and fall animations. Faces the movement direction.
 - Coins (with a counter), spikes (death), patrolling enemies, a goal flag (next level). Enemies
@@ -302,6 +302,7 @@ Each milestone adds only the crates it needs.
 rs-engine/
 ├── CLAUDE.md              guidance for Claude sessions
 ├── ROADMAP.md             milestones and status
+├── README.md, LICENSE-*   overview and the dual license
 ├── Cargo.toml             workspace: shared dependency versions and lints
 ├── rust-toolchain.toml    stable + rustfmt + clippy
 ├── crates/ecs/
@@ -319,7 +320,8 @@ rs-engine/
   reading.
 - Comments explain *why*; the code shows *what*.
 - Explicit, simple code over clever abstractions: few generics, no macro magic, no `unsafe`.
-- `missing_docs` is a warning in `engine` and `ecs`; CI treats warnings as errors.
+- Workspace lints in the root `Cargo.toml`: `missing_docs` warns and `unsafe_code` is denied in
+  every crate; CI treats warnings as errors.
 - Small focused files. A file growing past a few hundred lines is a signal to split it.
 
 ## 13. Learning materials
@@ -334,7 +336,6 @@ rs-engine/
 
 Each one is resolved in the milestone named.
 
-- License (suggested: MIT OR Apache-2.0) and whether to create a GitHub remote: M0.
 - The exact art pack and the virtual resolution (default 480×270): M4.
 - Font and sound packs: M10.
 
@@ -345,3 +346,7 @@ Each one is resolved in the milestone named.
 | 2026-10-02 | Learning-focused 2D engine; Claude writes the code, the user studies it. |
 | 2026-10-02 | Framework plus our own mini-ECS; a three-crate workspace (`ecs` → `engine` → `platformer`). |
 | 2026-10-02 | MVP criterion: a mini-platformer. Everything in the repository is written in English. |
+| 2026-10-02 | Rust installed with the official rustup script; `rust-toolchain.toml` follows the stable channel. |
+| 2026-10-02 | License: MIT OR Apache-2.0. Public GitHub repository `alekseinovikov/rs-engine`; CI on Ubuntu and macOS. |
+| 2026-10-02 | Workspace lints: `unsafe_code = "deny"` and `missing_docs = "warn"` in every crate. |
+| 2026-10-02 | Git workflow: one branch per milestone (`milestone/mN-<name>`), merged into `main` through a pull request with a merge commit; milestone tags go on the merge commits. |

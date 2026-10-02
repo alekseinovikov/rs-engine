@@ -10,6 +10,8 @@ low-level crates to understand how game engines work. The MVP is done when the m
 
 - Plan and status: [ROADMAP.md](ROADMAP.md)
 - Design and decision log: [docs/superpowers/specs/2026-10-02-engine-mvp-design.md](docs/superpowers/specs/2026-10-02-engine-mvp-design.md)
+- Repository: https://github.com/alekseinovikov/rs-engine (public). CI runs on every push to
+  `main` and on pull requests.
 
 ## Working mode
 
@@ -23,22 +25,33 @@ low-level crates to understand how game engines work. The MVP is done when the m
 ## Session start
 
 1. Read ROADMAP.md to find the current milestone and its status.
-2. If a plan for it exists in `docs/superpowers/plans/`, continue from the first unchecked step.
-3. Skim `git log --oneline -15` and the latest note in `docs/learning/`.
-4. Read the design spec before changing the architecture.
+2. Check the branch: milestone work happens on `milestone/mN-<name>`. If an unmerged milestone
+   branch exists, continue there.
+3. If a plan for the milestone exists in `docs/superpowers/plans/`, continue from the first
+   unchecked step.
+4. Skim `git log --oneline -15` and the latest note in `docs/learning/`.
+5. Read the design spec before changing the architecture.
 
 ## Milestone workflow
 
 One milestone at a time: start the next one only when the current one is done and the user agrees.
+Each milestone is developed on its own branch, `milestone/mN-<name>`, and reaches `main` through a
+pull request.
 
 1. Clarify open details with the user.
-2. Write the plan: `docs/superpowers/plans/YYYY-MM-DD-mN-<name>.md`.
-3. Implement in small steps, test-first for pure logic, committing after each step.
-4. Verify: fmt, clippy, tests, run the milestone example; ask the user to run it.
-5. Write the learning note `docs/learning/NN-<name>.md`: concepts, where they live in the code,
+2. Create the branch from an up-to-date `main`.
+3. Write the plan: `docs/superpowers/plans/YYYY-MM-DD-mN-<name>.md`; tick its checkboxes as steps
+   are completed.
+4. Implement in small steps, test-first for pure logic, committing after each step.
+5. Verify: fmt, clippy, tests, run the milestone example. Push the branch and open a pull request;
+   CI must be green.
+6. Write the learning note `docs/learning/NN-<name>.md`: concepts, where they live in the code,
    pitfalls, experiments to try, further reading.
-6. Update ROADMAP.md (status, current milestone), tag the commit (`mN-<name>`), and add
-   significant decisions to the spec's decision log.
+7. Update ROADMAP.md (status, current milestone) and add significant decisions to the spec's
+   decision log.
+8. The user runs the example, reads the code and reviews the pull request.
+9. After the user's OK: merge the pull request with a merge commit, tag the merge commit on `main`
+   (`mN-<name>`) and push the tag.
 
 ## Architecture
 
@@ -66,7 +79,8 @@ Rules:
 
 - Every module starts with `//!` docs that explain its concept; comments explain *why*.
 - Explicit and simple over clever: few generics, no macro magic, **no `unsafe`**.
-- Public items are documented (`missing_docs` warns in `engine` and `ecs`).
+- Public items are documented. Workspace lints in the root `Cargo.toml`: `missing_docs` warns
+  and `unsafe_code` is denied in every crate.
 - Errors: `engine::Error` (thiserror) in the engine, `anyhow` in the game. Panic only on
   programmer errors, with a message that says how to fix the problem.
 - Unit tests for all pure logic; no GPU in tests.
@@ -84,7 +98,7 @@ code against it: wgpu changes between major versions.
 CC0 or similarly permissive only; record the source and license in `assets/CREDITS.md`. Ask the
 user before downloading anything.
 
-## Commands (available after M0)
+## Commands
 
 ```bash
 cargo build --workspace

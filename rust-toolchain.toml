@@ -1,0 +1,5 @@
+# Tells rustup which toolchain to use inside this repository. rustup reads this file
+# automatically and installs whatever is missing the first time `cargo` runs here.
+[toolchain]
+channel = "stable"
+components = ["rustfmt", "clippy"]

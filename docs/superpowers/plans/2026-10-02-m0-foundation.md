@@ -33,6 +33,9 @@ and an integration test that runs the binary.
 - License: `MIT OR Apache-2.0`; MIT copyright line `Copyright (c) 2026 Aleksei Novikov`.
 - GitHub: public repository `alekseinovikov/rs-engine`; CI on `ubuntu-latest` and `macos-latest`
   with `actions/checkout@v7` and `Swatinem/rust-cache@v2`.
+- Git: all M0 work happens on the branch `milestone/m0-foundation` and reaches `main` through a
+  pull request, merged with a merge commit after the user's review; the tag `m0-foundation` goes on
+  the merge commit.
 - Progress tracking: tick each step's checkbox in this file as it is completed and include this
   file in the task's commit.
 
@@ -57,14 +60,23 @@ and an integration test that runs the binary.
 ### Task 1: Install the Rust toolchain
 
 **Files:**
-- Modify: `ROADMAP.md` (M0 status)
+- Modify: `ROADMAP.md` (M0 status, milestone process)
+- Modify: `CLAUDE.md` (session start, milestone workflow)
 
 **Interfaces:**
 - Consumes: nothing.
-- Produces: `rustup`, `rustc`, `cargo`, `cargo fmt` and `cargo clippy` on `PATH` (through
-  `~/.cargo/bin`).
+- Produces: the branch `milestone/m0-foundation`; `rustup`, `rustc`, `cargo`, `cargo fmt` and
+  `cargo clippy` on `PATH` (through `~/.cargo/bin`).
 
-- [ ] **Step 1: Mark M0 as in progress**
+- [x] **Step 1: Create the milestone branch**
+
+Run: `git switch -c milestone/m0-foundation`
+
+Expected: `Switched to a new branch 'milestone/m0-foundation'`. The branch name differs from the
+future tag `m0-foundation` on purpose: a branch and a tag with the same name make
+`git checkout m0-foundation` ambiguous.
+
+- [x] **Step 2: Mark M0 as in progress**
 
 In `ROADMAP.md`, replace
 
@@ -80,7 +92,69 @@ with
 
 and in the table row that starts with `| M0 | Foundation |`, replace the final `⬜` with `🟨`.
 
-- [ ] **Step 2: Install rustup and the stable toolchain**
+- [x] **Step 3: Record the branch-per-milestone workflow**
+
+In `ROADMAP.md`, replace the whole `## How we work through a milestone` section (from the heading
+down to, not including, the `---` line above `## M0 — Foundation`) with:
+
+```markdown
+## How we work through a milestone
+
+One milestone at a time: the next one starts only when the current one is done and the user
+agrees. Each milestone is developed on its own branch, `milestone/mN-<name>`, and reaches `main`
+through a pull request.
+
+1. Clarify open details with the user (a short brainstorm).
+2. Write the implementation plan: `docs/superpowers/plans/YYYY-MM-DD-mN-<name>.md`.
+3. Implement in small steps on the milestone branch, test-first for pure logic, committing after
+   each step.
+4. Verify: fmt, clippy, tests, run the example. Open the pull request; CI must be green.
+5. Write the learning note: `docs/learning/NN-<name>.md`.
+6. Mark the milestone done here and update "Current milestone".
+7. The user runs the example, reads the code and reviews the pull request.
+8. After the user's OK: merge the pull request with a merge commit and tag the merge commit
+   (`mN-<name>`).
+
+```
+
+In `CLAUDE.md`, replace the `## Session start` and `## Milestone workflow` sections (from
+`## Session start` down to, not including, `## Architecture`) with:
+
+```markdown
+## Session start
+
+1. Read ROADMAP.md to find the current milestone and its status.
+2. Check the branch: milestone work happens on `milestone/mN-<name>`. If an unmerged milestone
+   branch exists, continue there.
+3. If a plan for the milestone exists in `docs/superpowers/plans/`, continue from the first
+   unchecked step.
+4. Skim `git log --oneline -15` and the latest note in `docs/learning/`.
+5. Read the design spec before changing the architecture.
+
+## Milestone workflow
+
+One milestone at a time: start the next one only when the current one is done and the user agrees.
+Each milestone is developed on its own branch, `milestone/mN-<name>`, and reaches `main` through a
+pull request.
+
+1. Clarify open details with the user.
+2. Create the branch from an up-to-date `main`.
+3. Write the plan: `docs/superpowers/plans/YYYY-MM-DD-mN-<name>.md`; tick its checkboxes as steps
+   are completed.
+4. Implement in small steps, test-first for pure logic, committing after each step.
+5. Verify: fmt, clippy, tests, run the milestone example. Push the branch and open a pull request;
+   CI must be green.
+6. Write the learning note `docs/learning/NN-<name>.md`: concepts, where they live in the code,
+   pitfalls, experiments to try, further reading.
+7. Update ROADMAP.md (status, current milestone) and add significant decisions to the spec's
+   decision log.
+8. The user runs the example, reads the code and reviews the pull request.
+9. After the user's OK: merge the pull request with a merge commit, tag the merge commit on `main`
+   (`mN-<name>`) and push the tag.
+
+```
+
+- [x] **Step 4: Install rustup and the stable toolchain**
 
 Run:
 
@@ -96,7 +170,7 @@ adds `~/.cargo/bin` to `PATH`.
 
 Expected: the output ends with `Rust is installed now. Great!`
 
-- [ ] **Step 3: Verify the toolchain**
+- [x] **Step 5: Verify the toolchain**
 
 Run:
 
@@ -108,10 +182,10 @@ rustup --version && rustc --version && cargo --version && cargo fmt --version &&
 Expected: five version lines, with `rustc` 1.85 or newer (edition 2024 requires 1.85). New shells
 pick up `PATH` automatically; if `cargo` is not found in one, run `source "$HOME/.cargo/env"`.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
-git add ROADMAP.md docs/superpowers/plans/2026-10-02-m0-foundation.md
+git add ROADMAP.md CLAUDE.md docs/superpowers/plans/2026-10-02-m0-foundation.md
 git commit -m "Start milestone M0" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ```
 
@@ -131,7 +205,7 @@ git commit -m "Start milestone M0" -m "Co-Authored-By: Claude Opus 5.5 <noreply@
 - Produces: `pub const ecs::VERSION: &str` (the `ecs` package version, today `"0.1.0"`), and a root
   `Cargo.toml` with `[workspace.package]` and `[workspace.lints.rust]` that Tasks 3 and 4 extend.
 
-- [ ] **Step 1: Pin the toolchain**
+- [x] **Step 1: Pin the toolchain**
 
 Create `rust-toolchain.toml`:
 
@@ -143,7 +217,7 @@ channel = "stable"
 components = ["rustfmt", "clippy"]
 ```
 
-- [ ] **Step 2: Create the workspace manifest**
+- [x] **Step 2: Create the workspace manifest**
 
 Create `Cargo.toml`:
 
@@ -174,7 +248,7 @@ unsafe_code = "deny"
 missing_docs = "warn"
 ```
 
-- [ ] **Step 3: Create the `ecs` crate**
+- [x] **Step 3: Create the `ecs` crate**
 
 Create `crates/ecs/Cargo.toml`:
 
@@ -212,7 +286,7 @@ Create `crates/ecs/src/lib.rs`:
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 ```
 
-- [ ] **Step 4: Build and check**
+- [x] **Step 4: Build and check**
 
 Run:
 
@@ -226,7 +300,7 @@ cargo clippy --workspace --all-targets -- -D warnings
 Expected: `Compiling ecs v0.1.0 (...)` followed by `Finished`; `cargo fmt --all --check` prints
 nothing; clippy finishes without warnings. A `Cargo.lock` file appears in the repository root.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add rust-toolchain.toml Cargo.toml Cargo.lock crates/ecs docs/superpowers/plans/2026-10-02-m0-foundation.md
@@ -248,7 +322,7 @@ git commit -m "Add the Cargo workspace and the ecs crate" -m "Co-Authored-By: Cl
   returns `"rs-engine <engine version> (ecs <ecs version>)"`, today
   `"rs-engine 0.1.0 (ecs 0.1.0)"`.
 
-- [ ] **Step 1: Register the crate in the workspace**
+- [x] **Step 1: Register the crate in the workspace**
 
 In `Cargo.toml`, replace
 
@@ -277,7 +351,7 @@ and insert this section between the `[workspace.package]` section and the
 ecs = { path = "crates/ecs" }
 ```
 
-- [ ] **Step 2: Create the crate manifest**
+- [x] **Step 2: Create the crate manifest**
 
 Create `crates/engine/Cargo.toml`:
 
@@ -298,7 +372,7 @@ ecs.workspace = true
 workspace = true
 ```
 
-- [ ] **Step 3: Write the failing test**
+- [x] **Step 3: Write the failing test**
 
 Create `crates/engine/src/lib.rs`:
 
@@ -331,13 +405,13 @@ mod tests {
 }
 ```
 
-- [ ] **Step 4: Run the test to verify it fails**
+- [x] **Step 4: Run the test to verify it fails**
 
 Run: `cargo test -p engine`
 
 Expected: compilation fails with ``error[E0425]: cannot find function `greeting` in this scope``.
 
-- [ ] **Step 5: Implement `greeting()`**
+- [x] **Step 5: Implement `greeting()`**
 
 In `crates/engine/src/lib.rs`, insert between the `VERSION` constant and the `#[cfg(test)]` line:
 
@@ -358,14 +432,14 @@ pub fn greeting() -> String {
 }
 ```
 
-- [ ] **Step 6: Run the tests to verify they pass**
+- [x] **Step 6: Run the tests to verify they pass**
 
 Run: `cargo test -p engine`
 
 Expected: `test tests::greeting_names_the_engine_and_its_ecs ... ok` among the unit tests, and a
 line like `test crates/engine/src/lib.rs - greeting (line 20) ... ok` under `Doc-tests engine`.
 
-- [ ] **Step 7: Format, lint and commit**
+- [x] **Step 7: Format, lint and commit**
 
 ```bash
 cargo fmt --all && cargo fmt --all --check
@@ -391,7 +465,7 @@ Expected: no formatting diff and no clippy warnings before the commit.
 - Produces: the binary `platformer`, which prints `engine::greeting()` and a newline to stdout and
   exits with status 0.
 
-- [ ] **Step 1: Register the package in the workspace**
+- [x] **Step 1: Register the package in the workspace**
 
 In `Cargo.toml`, replace
 
@@ -418,7 +492,7 @@ and in `[workspace.dependencies]`, add below the `ecs = ...` line:
 engine = { path = "crates/engine" }
 ```
 
-- [ ] **Step 2: Create the package with an empty `main`**
+- [x] **Step 2: Create the package with an empty `main`**
 
 Create `games/platformer/Cargo.toml`:
 
@@ -450,7 +524,7 @@ Create `games/platformer/src/main.rs`:
 fn main() {}
 ```
 
-- [ ] **Step 3: Write the failing integration test**
+- [x] **Step 3: Write the failing integration test**
 
 Create `games/platformer/tests/startup.rs`:
 
@@ -476,14 +550,14 @@ fn prints_the_engine_greeting() {
 }
 ```
 
-- [ ] **Step 4: Run the test to verify it fails**
+- [x] **Step 4: Run the test to verify it fails**
 
 Run: `cargo test -p platformer`
 
 Expected: `prints_the_engine_greeting` FAILS with ``assertion `left == right` failed``,
 `left: ""` and `right: "rs-engine 0.1.0 (ecs 0.1.0)"`.
 
-- [ ] **Step 5: Print the greeting**
+- [x] **Step 5: Print the greeting**
 
 In `games/platformer/src/main.rs`, replace `fn main() {}` with:
 
@@ -493,7 +567,7 @@ fn main() {
 }
 ```
 
-- [ ] **Step 6: Run the tests to verify they pass**
+- [x] **Step 6: Run the tests to verify they pass**
 
 Run: `cargo test -p platformer`
 Expected: `test prints_the_engine_greeting ... ok`.
@@ -501,7 +575,7 @@ Expected: `test prints_the_engine_greeting ... ok`.
 Run: `cargo run -p platformer`
 Expected output: `rs-engine 0.1.0 (ecs 0.1.0)`.
 
-- [ ] **Step 7: Full check and commit**
+- [x] **Step 7: Full check and commit**
 
 ```bash
 cargo fmt --all && cargo fmt --all --check
@@ -527,7 +601,7 @@ Expected: no formatting diff, no clippy warnings, every test passes.
   paths from Tasks 2–4.
 - Produces: license files that match the Cargo metadata; a README that later milestones extend.
 
-- [ ] **Step 1: Write the license files**
+- [x] **Step 1: Write the license files**
 
 The license texts come from GitHub's licenses API (the same texts GitHub's license picker uses). The
 MIT template has `[year]` and `[fullname]` placeholders; the Apache-2.0 text is used verbatim
@@ -538,7 +612,7 @@ gh api licenses/mit --jq .body | sed -e 's/\[year\]/2026/' -e 's/\[fullname\]/Al
 gh api licenses/apache-2.0 --jq .body > LICENSE-APACHE
 ```
 
-- [ ] **Step 2: Verify the license files**
+- [x] **Step 2: Verify the license files**
 
 Run:
 
@@ -551,7 +625,7 @@ head -3 LICENSE-APACHE
 Expected: `Copyright (c) 2026 Aleksei Novikov`, then `0`, then the Apache header lines containing
 `Apache License` and `Version 2.0, January 2004`.
 
-- [ ] **Step 3: Write the README**
+- [x] **Step 3: Write the README**
 
 Create `README.md`:
 
@@ -598,7 +672,7 @@ this project by you, as defined in the Apache-2.0 license, shall be dual license
 any additional terms or conditions.
 ````
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add LICENSE-MIT LICENSE-APACHE README.md docs/superpowers/plans/2026-10-02-m0-foundation.md
@@ -615,9 +689,10 @@ git commit -m "Add the README and the MIT OR Apache-2.0 license" -m "Co-Authored
 **Interfaces:**
 - Consumes: `rust-toolchain.toml` (Task 2); the check commands from Tasks 2–4.
 - Produces: the public repository `https://github.com/alekseinovikov/rs-engine` with the remote
-  `origin`, and a `CI` workflow that runs on every push to `main` and on pull requests.
+  `origin`, a `CI` workflow that runs on every push to `main` and on pull requests, and the open
+  pull request `milestone/m0-foundation` → `main`.
 
-- [ ] **Step 1: Write the workflow**
+- [x] **Step 1: Write the workflow**
 
 Create `.github/workflows/ci.yml`:
 
@@ -665,29 +740,60 @@ jobs:
         run: cargo test --workspace
 ```
 
-- [ ] **Step 2: Commit the workflow**
+- [x] **Step 2: Commit the workflow**
 
 ```bash
 git add .github/workflows/ci.yml docs/superpowers/plans/2026-10-02-m0-foundation.md
 git commit -m "Add CI for Linux and macOS" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ```
 
-- [ ] **Step 3: Create the GitHub repository and push**
+- [x] **Step 3: Create the GitHub repository and push both branches**
 
 ```bash
 gh repo create alekseinovikov/rs-engine --public --description "A small 2D game engine in Rust, written from scratch for learning" --source . --remote origin
 git push -u origin main
+git push -u origin milestone/m0-foundation
 ```
 
-Expected: `✓ Created repository alekseinovikov/rs-engine on GitHub`, `✓ Added remote ...`, and the
-push ends with `branch 'main' set up to track 'origin/main'`.
+Expected: `✓ Created repository alekseinovikov/rs-engine on GitHub` and `✓ Added remote ...`; both
+pushes succeed. Pushing `main` starts no CI run, because so far the workflow file exists only on
+the milestone branch.
 
-- [ ] **Step 4: Confirm that CI started**
+- [x] **Step 4: Open the pull request**
 
-Run: `gh run list --limit 1`
+````bash
+gh pr create --base main --head milestone/m0-foundation --title "M0: Foundation" --body-file - <<'EOF'
+Milestone M0 from ROADMAP.md: the Rust toolchain and the final shape of the repository.
 
-Expected: one run of the `CI` workflow for the pushed commit, with status `queued` or
-`in_progress`. Do not wait for it here: Task 8 checks the result.
+## What's inside
+
+- A Cargo workspace (edition 2024, resolver 3) with three crates: `ecs` (lib), `engine` (lib) and
+  `platformer` (bin), plus shared metadata, dependencies and lints.
+- `engine::greeting()` crosses both crate boundaries and is covered by a unit test, a doc test and
+  an integration test that runs the binary.
+- `rust-toolchain.toml`, README, the MIT OR Apache-2.0 license, CI on Linux and macOS.
+- The learning note `docs/learning/00-foundation.md`.
+
+## How to check
+
+```bash
+cargo run -p platformer   # prints: rs-engine 0.1.0 (ecs 0.1.0)
+cargo test --workspace
+```
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+EOF
+````
+
+Expected: the command prints the pull request URL. Opening the pull request starts the `CI`
+workflow (`pull_request` trigger).
+
+- [x] **Step 5: Confirm that CI started**
+
+Bind the pull request to the session and read its checks once: in the Claude desktop app with the
+PR tools (`get_status`, then `bind_pr` with the PR URL if the PR is not reported yet); elsewhere
+with `gh pr checks milestone/m0-foundation`. Expected: the checks `Check (ubuntu-latest)` and
+`Check (macos-latest)` are queued or running. Do not wait for them here: Task 8 reads the result.
 
 ---
 
@@ -701,7 +807,7 @@ Expected: one run of the `CI` workflow for the pushed commit, with status `queue
 - Produces: the M0 learning note; later notes follow the same structure (What we built, Key
   concepts, Where to look in the code, Experiments to try, Further reading).
 
-- [ ] **Step 1: Write the note**
+- [x] **Step 1: Write the note**
 
 Create `docs/learning/00-foundation.md`:
 
@@ -853,11 +959,12 @@ Sharing the ecosystem's license makes it easy to move code between projects.
 - [The list of clippy lints](https://rust-lang.github.io/rust-clippy/master/)
 ````
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit and push**
 
 ```bash
 git add docs/learning/00-foundation.md docs/superpowers/plans/2026-10-02-m0-foundation.md
 git commit -m "Add the M0 learning note" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+git push
 ```
 
 ---
@@ -870,10 +977,11 @@ git commit -m "Add the M0 learning note" -m "Co-Authored-By: Claude Opus 5.5 <no
 - Modify: `docs/superpowers/specs/2026-10-02-engine-mvp-design.md`
 
 **Interfaces:**
-- Consumes: everything above.
-- Produces: M0 marked done, M1 as the current milestone, the tag `m0-foundation` on GitHub.
+- Consumes: everything above, including the open pull request.
+- Produces: M0 marked done and M1 as the current milestone; the pull request merged into `main`;
+  the tag `m0-foundation` on the merge commit, pushed to GitHub.
 
-- [ ] **Step 1: Run the full local verification**
+- [x] **Step 1: Run the full local verification**
 
 ```bash
 cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings && cargo test --workspace && cargo run -p platformer
@@ -882,21 +990,7 @@ cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings
 Expected: no formatting diff, no clippy warnings, all tests pass (unit, integration and doc tests),
 and the last line printed is `rs-engine 0.1.0 (ecs 0.1.0)`.
 
-- [ ] **Step 2: Check the CI result**
-
-Run: `gh run list --workflow CI --branch main --limit 1`
-
-Expected: status `completed`, conclusion `success`. If the run is still in progress, do Step 3
-first and check again afterwards. If it failed, read the log with `gh run view <run-id> --log-failed`,
-fix the cause, commit, push, and check again.
-
-- [ ] **Step 3: User check-in**
-
-Ask the user to run `cargo run -p platformer` and `cargo test --workspace` themselves, read the
-code (`Cargo.toml`, the three crates) and `docs/learning/00-foundation.md`, and try a couple of the
-experiments. Answer questions and apply requested changes before continuing.
-
-- [ ] **Step 4: Update CLAUDE.md**
+- [x] **Step 2: Update CLAUDE.md**
 
 1. Replace `## Commands (available after M0)` with `## Commands`.
 2. Replace
@@ -919,7 +1013,7 @@ experiments. Answer questions and apply requested changes before continuing.
      `main` and on pull requests.
    ```
 
-- [ ] **Step 5: Update ROADMAP.md**
+- [x] **Step 3: Update ROADMAP.md**
 
 1. Replace `**Current milestone:** M0 — Foundation (in progress)` with
    `**Current milestone:** M1 — Window, game loop, input (not started)`.
@@ -952,7 +1046,7 @@ experiments. Answer questions and apply requested changes before continuing.
 
 5. In the M4 section, replace `nearest-neighbour sampler` with `nearest-neighbor sampler`.
 
-- [ ] **Step 6: Update the design spec**
+- [x] **Step 4: Update the design spec**
 
 In `docs/superpowers/specs/2026-10-02-engine-mvp-design.md`:
 
@@ -1001,16 +1095,46 @@ In `docs/superpowers/specs/2026-10-02-engine-mvp-design.md`:
    | 2026-10-02 | Rust installed with the official rustup script; `rust-toolchain.toml` follows the stable channel. |
    | 2026-10-02 | License: MIT OR Apache-2.0. Public GitHub repository `alekseinovikov/rs-engine`; CI on Ubuntu and macOS. |
    | 2026-10-02 | Workspace lints: `unsafe_code = "deny"` and `missing_docs = "warn"` in every crate. |
+   | 2026-10-02 | Git workflow: one branch per milestone (`milestone/mN-<name>`), merged into `main` through a pull request with a merge commit; milestone tags go on the merge commits. |
    ```
 
-- [ ] **Step 7: Commit, tag and push**
+- [x] **Step 5: Commit and push**
 
 ```bash
 git add CLAUDE.md ROADMAP.md docs/superpowers/specs/2026-10-02-engine-mvp-design.md docs/superpowers/plans/2026-10-02-m0-foundation.md
 git commit -m "Complete milestone M0" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
-git tag -a m0-foundation -m "M0: Foundation"
-git push origin main --follow-tags
+git push
 ```
 
-Expected: the push includes the commits and the new tag `m0-foundation`; a new CI run starts for
-the pushed `main`.
+- [ ] **Step 6: Check CI on the pull request**
+
+Read the pull request's checks once (desktop app: PR tool `get_status`; elsewhere:
+`gh pr checks milestone/m0-foundation`). Expected: `Check (ubuntu-latest)` and
+`Check (macos-latest)` pass. If they are still running, continue with Step 7 and read them again
+when the user answers. If a check failed, read its log with `gh run view <run-id> --log-failed`,
+fix the cause, commit and push.
+
+- [ ] **Step 7: User review**
+
+Ask the user to run `cargo run -p platformer` and `cargo test --workspace`, read the code and
+`docs/learning/00-foundation.md`, try a few experiments, and review the pull request on GitHub.
+Apply requested changes on the branch (commit and push) before continuing.
+
+- [ ] **Step 8: Merge and tag**
+
+Only after the user's OK and with green CI:
+
+```bash
+gh pr merge milestone/m0-foundation --merge --delete-branch
+git switch main
+git pull --ff-only
+git tag -a m0-foundation -m "M0: Foundation"
+git push origin m0-foundation
+```
+
+Expected: the pull request is merged with a merge commit, the branch is deleted locally and on
+GitHub, local `main` matches `origin/main`, and the tag `m0-foundation` points at the merge commit.
+The merge into `main` starts a CI run there.
+
+Steps 6–8 happen after the last commit on the branch, so their checkboxes stay unticked in the
+merged plan; ROADMAP.md and the tag are the record that M0 is done.

@@ -1,0 +1,14 @@
+[package]
+name = "platformer"
+description = "The rs-engine MVP demo: a small platformer."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[dependencies]
+engine.workspace = true
+
+[lints]
+workspace = true
