@@ -4,6 +4,7 @@
 resolver = "3"
 members = [
     "crates/ecs",
+    "crates/engine",
 ]
 
 # Package metadata that members inherit with `key.workspace = true`.
@@ -13,6 +14,11 @@ edition = "2024"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/alekseinovikov/rs-engine"
 publish = false
+
+# Dependencies shared by all members. A member opts in with `name.workspace = true`, so
+# every version (or path) is written in exactly one place.
+[workspace.dependencies]
+ecs = { path = "crates/ecs" }
 
 # Lints shared by all members; each member opts in with `[lints] workspace = true`.
 [workspace.lints.rust]

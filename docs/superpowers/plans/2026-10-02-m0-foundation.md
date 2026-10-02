@@ -322,7 +322,7 @@ git commit -m "Add the Cargo workspace and the ecs crate" -m "Co-Authored-By: Cl
   returns `"rs-engine <engine version> (ecs <ecs version>)"`, today
   `"rs-engine 0.1.0 (ecs 0.1.0)"`.
 
-- [ ] **Step 1: Register the crate in the workspace**
+- [x] **Step 1: Register the crate in the workspace**
 
 In `Cargo.toml`, replace
 
@@ -351,7 +351,7 @@ and insert this section between the `[workspace.package]` section and the
 ecs = { path = "crates/ecs" }
 ```
 
-- [ ] **Step 2: Create the crate manifest**
+- [x] **Step 2: Create the crate manifest**
 
 Create `crates/engine/Cargo.toml`:
 
@@ -372,7 +372,7 @@ ecs.workspace = true
 workspace = true
 ```
 
-- [ ] **Step 3: Write the failing test**
+- [x] **Step 3: Write the failing test**
 
 Create `crates/engine/src/lib.rs`:
 
@@ -405,13 +405,13 @@ mod tests {
 }
 ```
 
-- [ ] **Step 4: Run the test to verify it fails**
+- [x] **Step 4: Run the test to verify it fails**
 
 Run: `cargo test -p engine`
 
 Expected: compilation fails with ``error[E0425]: cannot find function `greeting` in this scope``.
 
-- [ ] **Step 5: Implement `greeting()`**
+- [x] **Step 5: Implement `greeting()`**
 
 In `crates/engine/src/lib.rs`, insert between the `VERSION` constant and the `#[cfg(test)]` line:
 
@@ -432,14 +432,14 @@ pub fn greeting() -> String {
 }
 ```
 
-- [ ] **Step 6: Run the tests to verify they pass**
+- [x] **Step 6: Run the tests to verify they pass**
 
 Run: `cargo test -p engine`
 
 Expected: `test tests::greeting_names_the_engine_and_its_ecs ... ok` among the unit tests, and a
 line like `test crates/engine/src/lib.rs - greeting (line 20) ... ok` under `Doc-tests engine`.
 
-- [ ] **Step 7: Format, lint and commit**
+- [x] **Step 7: Format, lint and commit**
 
 ```bash
 cargo fmt --all && cargo fmt --all --check

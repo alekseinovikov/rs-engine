@@ -1,0 +1,14 @@
+[package]
+name = "engine"
+description = "A small 2D game engine framework, written from scratch for learning."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[dependencies]
+ecs.workspace = true
+
+[lints]
+workspace = true
