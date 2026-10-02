@@ -27,6 +27,8 @@ winit = "0.30"
 log = "0.4"
 # `#[derive(Error)]` for the engine's error type.
 thiserror = "2"
+# A logger that prints `log` records to stderr, filtered by the RUST_LOG variable.
+env_logger = "0.11"
 
 # Lints shared by all members; each member opts in with `[lints] workspace = true`.
 [workspace.lints.rust]
