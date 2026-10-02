@@ -26,6 +26,7 @@ mod config;
 mod context;
 mod error;
 mod fps;
+mod gfx;
 mod input;
 mod pacing;
 mod platform;
@@ -34,6 +35,7 @@ mod time;
 pub use config::Config;
 pub use context::Context;
 pub use error::Error;
+pub use gfx::Color;
 pub use input::{Input, Key, MouseButton};
 pub use time::Time;
 
