@@ -7,6 +7,8 @@
 //! For now it only provides [`greeting`], which proves that the workspace crates are wired
 //! together: `platformer` → `engine` → `ecs`.
 
+mod fps;
+mod pacing;
 mod time;
 
 pub use time::Time;
