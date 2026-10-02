@@ -601,7 +601,7 @@ Expected: no formatting diff, no clippy warnings, every test passes.
   paths from Tasks 2–4.
 - Produces: license files that match the Cargo metadata; a README that later milestones extend.
 
-- [ ] **Step 1: Write the license files**
+- [x] **Step 1: Write the license files**
 
 The license texts come from GitHub's licenses API (the same texts GitHub's license picker uses). The
 MIT template has `[year]` and `[fullname]` placeholders; the Apache-2.0 text is used verbatim
@@ -612,7 +612,7 @@ gh api licenses/mit --jq .body | sed -e 's/\[year\]/2026/' -e 's/\[fullname\]/Al
 gh api licenses/apache-2.0 --jq .body > LICENSE-APACHE
 ```
 
-- [ ] **Step 2: Verify the license files**
+- [x] **Step 2: Verify the license files**
 
 Run:
 
@@ -625,7 +625,7 @@ head -3 LICENSE-APACHE
 Expected: `Copyright (c) 2026 Aleksei Novikov`, then `0`, then the Apache header lines containing
 `Apache License` and `Version 2.0, January 2004`.
 
-- [ ] **Step 3: Write the README**
+- [x] **Step 3: Write the README**
 
 Create `README.md`:
 
@@ -672,7 +672,7 @@ this project by you, as defined in the Apache-2.0 license, shall be dual license
 any additional terms or conditions.
 ````
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add LICENSE-MIT LICENSE-APACHE README.md docs/superpowers/plans/2026-10-02-m0-foundation.md
