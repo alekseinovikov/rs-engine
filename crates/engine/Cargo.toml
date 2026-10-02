@@ -9,6 +9,12 @@ publish.workspace = true
 
 [dependencies]
 ecs.workspace = true
+log.workspace = true
+thiserror.workspace = true
+winit.workspace = true
+
+[dev-dependencies]
+env_logger.workspace = true
 
 [lints]
 workspace = true
