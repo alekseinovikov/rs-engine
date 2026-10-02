@@ -10,6 +10,8 @@ low-level crates to understand how game engines work. The MVP is done when the m
 
 - Plan and status: [ROADMAP.md](ROADMAP.md)
 - Design and decision log: [docs/superpowers/specs/2026-10-02-engine-mvp-design.md](docs/superpowers/specs/2026-10-02-engine-mvp-design.md)
+- Repository: https://github.com/alekseinovikov/rs-engine (public). CI runs on every push to
+  `main` and on pull requests.
 
 ## Working mode
 
@@ -77,7 +79,8 @@ Rules:
 
 - Every module starts with `//!` docs that explain its concept; comments explain *why*.
 - Explicit and simple over clever: few generics, no macro magic, **no `unsafe`**.
-- Public items are documented (`missing_docs` warns in `engine` and `ecs`).
+- Public items are documented. Workspace lints in the root `Cargo.toml`: `missing_docs` warns
+  and `unsafe_code` is denied in every crate.
 - Errors: `engine::Error` (thiserror) in the engine, `anyhow` in the game. Panic only on
   programmer errors, with a message that says how to fix the problem.
 - Unit tests for all pure logic; no GPU in tests.
@@ -95,7 +98,7 @@ code against it: wgpu changes between major versions.
 CC0 or similarly permissive only; record the source and license in `assets/CREDITS.md`. Ask the
 user before downloading anything.
 
-## Commands (available after M0)
+## Commands
 
 ```bash
 cargo build --workspace

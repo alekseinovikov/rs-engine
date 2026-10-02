@@ -981,7 +981,7 @@ git push
 - Produces: M0 marked done and M1 as the current milestone; the pull request merged into `main`;
   the tag `m0-foundation` on the merge commit, pushed to GitHub.
 
-- [ ] **Step 1: Run the full local verification**
+- [x] **Step 1: Run the full local verification**
 
 ```bash
 cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings && cargo test --workspace && cargo run -p platformer
@@ -990,7 +990,7 @@ cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings
 Expected: no formatting diff, no clippy warnings, all tests pass (unit, integration and doc tests),
 and the last line printed is `rs-engine 0.1.0 (ecs 0.1.0)`.
 
-- [ ] **Step 2: Update CLAUDE.md**
+- [x] **Step 2: Update CLAUDE.md**
 
 1. Replace `## Commands (available after M0)` with `## Commands`.
 2. Replace
@@ -1013,7 +1013,7 @@ and the last line printed is `rs-engine 0.1.0 (ecs 0.1.0)`.
      `main` and on pull requests.
    ```
 
-- [ ] **Step 3: Update ROADMAP.md**
+- [x] **Step 3: Update ROADMAP.md**
 
 1. Replace `**Current milestone:** M0 — Foundation (in progress)` with
    `**Current milestone:** M1 — Window, game loop, input (not started)`.
@@ -1046,7 +1046,7 @@ and the last line printed is `rs-engine 0.1.0 (ecs 0.1.0)`.
 
 5. In the M4 section, replace `nearest-neighbour sampler` with `nearest-neighbor sampler`.
 
-- [ ] **Step 4: Update the design spec**
+- [x] **Step 4: Update the design spec**
 
 In `docs/superpowers/specs/2026-10-02-engine-mvp-design.md`:
 
@@ -1098,7 +1098,7 @@ In `docs/superpowers/specs/2026-10-02-engine-mvp-design.md`:
    | 2026-10-02 | Git workflow: one branch per milestone (`milestone/mN-<name>`), merged into `main` through a pull request with a merge commit; milestone tags go on the merge commits. |
    ```
 
-- [ ] **Step 5: Commit and push**
+- [x] **Step 5: Commit and push**
 
 ```bash
 git add CLAUDE.md ROADMAP.md docs/superpowers/specs/2026-10-02-engine-mvp-design.md docs/superpowers/plans/2026-10-02-m0-foundation.md

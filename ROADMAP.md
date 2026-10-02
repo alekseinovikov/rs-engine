@@ -4,13 +4,13 @@ The MVP is reached when the mini-platformer is playable from the title screen to
 screen on our own engine. Design and decision log:
 [docs/superpowers/specs/2026-10-02-engine-mvp-design.md](docs/superpowers/specs/2026-10-02-engine-mvp-design.md).
 
-**Current milestone:** M0 — Foundation (in progress)
+**Current milestone:** M1 — Window, game loop, input (not started)
 
 Legend: ⬜ not started · 🟨 in progress · ✅ done
 
 | # | Milestone | What you see at the end | Status |
 |---|---|---|---|
-| M0 | Foundation | `cargo run -p platformer` prints a greeting from the engine; all checks pass | 🟨 |
+| M0 | Foundation | `cargo run -p platformer` prints a greeting from the engine; all checks pass | ✅ |
 | M1 | Window, game loop, input | A window with FPS in its title; key presses in the log | ⬜ |
 | M2 | Hello GPU | A cleared window and a colored triangle | ⬜ |
 | M3 | Sprite batching & camera | 10 000 moving rectangles; a panning, zooming camera | ⬜ |
@@ -52,9 +52,9 @@ Scope:
 - Install Rust with rustup (stable, with rustfmt and clippy); `rust-toolchain.toml`.
 - Cargo workspace (edition 2024, resolver 3): `crates/ecs` (lib), `crates/engine` (lib),
   `games/platformer` (bin); `[workspace.dependencies]` and `[workspace.lints]`.
-- `README.md` and a license (decide with the user).
-- GitHub Actions CI: fmt, clippy, tests, build (Ubuntu and macOS). Create a GitHub remote only if
-  the user wants one.
+- `README.md` and the MIT OR Apache-2.0 dual license.
+- GitHub Actions CI: fmt, clippy, tests, build (Ubuntu and macOS) in the public repository
+  `alekseinovikov/rs-engine`.
 - Learning note `00-foundation.md`.
 
 Done when:
@@ -136,7 +136,7 @@ groups, instancing, draw calls and why batching matters.
 
 Scope:
 
-- PNG → GPU texture (`image`); a nearest-neighbour sampler; alpha blending.
+- PNG → GPU texture (`image`); a nearest-neighbor sampler; alpha blending.
 - A grid texture atlas with UV regions; `gfx.draw_sprite` with flip and tint; batches split by
   texture.
 - An offscreen render target at the virtual resolution (default 480×270), upscaled by an integer
