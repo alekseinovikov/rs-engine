@@ -7,6 +7,10 @@
 //! For now it only provides [`greeting`], which proves that the workspace crates are wired
 //! together: `platformer` → `engine` → `ecs`.
 
+mod time;
+
+pub use time::Time;
+
 /// The version of this crate, read from its `Cargo.toml` at compile time.
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 
