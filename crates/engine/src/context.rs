@@ -21,8 +21,6 @@ pub struct Context {
     quit_requested: bool,
 }
 
-// Used by app.rs from Task 7 on; until then only tests call these.
-#[allow(dead_code)]
 impl Context {
     /// Creates the context for a fresh run.
     pub(crate) fn new(config: &Config) -> Self {

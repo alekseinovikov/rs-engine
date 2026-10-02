@@ -20,8 +20,6 @@ pub struct Input {
     mouse_position: (f32, f32),
 }
 
-// Used by app.rs from Task 7 on; until then only tests call these.
-#[allow(dead_code)]
 impl Input {
     /// Creates an input state with nothing held and the mouse at the origin.
     pub(crate) fn new() -> Self {

@@ -25,8 +25,6 @@ pub(crate) struct ButtonState<T> {
     released: HashSet<T>,
 }
 
-// Used by app.rs from Task 7 on; until then only tests call these.
-#[allow(dead_code)]
 impl<T: Copy + Eq + Hash> ButtonState<T> {
     /// Creates a state with nothing held.
     pub(crate) fn new() -> Self {

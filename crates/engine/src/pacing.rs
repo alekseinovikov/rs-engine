@@ -29,8 +29,6 @@ pub(crate) fn frame_period(max_fps: Option<u32>) -> Option<Duration> {
 }
 
 /// Schedules frames under an optional frames-per-second limit.
-// Used by app.rs from Task 7 on; until then only tests call these.
-#[allow(dead_code)]
 #[derive(Debug, Clone)]
 pub(crate) struct FramePacer {
     max_fps: Option<u32>,
@@ -38,8 +36,6 @@ pub(crate) struct FramePacer {
     next_frame: Option<Instant>,
 }
 
-// Used by app.rs from Task 7 on; until then only tests call these.
-#[allow(dead_code)]
 impl FramePacer {
     /// Creates a pacer. `None` means frames run back to back.
     pub(crate) fn new(max_fps: Option<u32>) -> Self {

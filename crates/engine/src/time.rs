@@ -33,8 +33,6 @@ pub struct Time {
     fps: f32,
 }
 
-// Used by app.rs from Task 7 on; until then only tests call these.
-#[allow(dead_code)]
 impl Time {
     /// The default fixed step: 1/60 of a second.
     pub const DEFAULT_FIXED_DT: Duration = Duration::from_nanos(16_666_666);

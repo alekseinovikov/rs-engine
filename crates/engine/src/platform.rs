@@ -11,8 +11,6 @@ use winit::keyboard::KeyCode;
 use crate::input::{Key, MouseButton};
 
 /// Translates a physical key code. Keys the engine does not know yet give `None`.
-// Used by app.rs from Task 7 on; until then only tests call these.
-#[allow(dead_code)]
 pub(crate) fn key_from_winit(code: KeyCode) -> Option<Key> {
     let key = match code {
         KeyCode::KeyA => Key::A,
@@ -84,8 +82,6 @@ pub(crate) fn key_from_winit(code: KeyCode) -> Option<Key> {
 }
 
 /// Translates a mouse button. Extra buttons (back, forward, …) give `None`.
-// Used by app.rs from Task 7 on; until then only tests call these.
-#[allow(dead_code)]
 pub(crate) fn mouse_button_from_winit(button: WinitMouseButton) -> Option<MouseButton> {
     match button {
         WinitMouseButton::Left => Some(MouseButton::Left),

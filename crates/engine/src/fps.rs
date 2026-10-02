@@ -8,8 +8,6 @@
 use std::time::Duration;
 
 /// Counts frames and reports their average rate once per window of time.
-// Used by app.rs from Task 7 on; until then only tests call these.
-#[allow(dead_code)]
 #[derive(Debug, Clone)]
 pub(crate) struct FpsCounter {
     window: Duration,
@@ -17,8 +15,6 @@ pub(crate) struct FpsCounter {
     elapsed: Duration,
 }
 
-// Used by app.rs from Task 7 on; until then only tests call these.
-#[allow(dead_code)]
 impl FpsCounter {
     /// How often a new FPS value is reported.
     pub(crate) const DEFAULT_WINDOW: Duration = Duration::from_millis(500);
