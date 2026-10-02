@@ -59,8 +59,9 @@ impl Gfx {
     pub(crate) fn new(window: Arc<Window>, vsync: bool) -> Result<Self, Error> {
         // The display handle lets backends that need one (OpenGL on Linux, for example) talk to
         // the display server. `from_env` lets `WGPU_BACKEND=vulkan` and friends override the
-        // defaults without recompiling. In debug builds the default flags turn on validation:
-        // every API call is checked, and a mistake panics with a readable message.
+        // defaults without recompiling. wgpu validates every API call in every build, and its
+        // default error handler panics with a readable message; in debug builds the default
+        // flags also enable the platform's own validation layers and debug labels.
         let descriptor = wgpu::InstanceDescriptor::new_with_display_handle_from_env(Box::new(
             Arc::clone(&window),
         ));
@@ -133,9 +134,12 @@ impl Gfx {
     }
 
     /// Finishes the frame: draws everything submitted since [`Gfx::begin_frame`] and shows it.
-    pub(crate) fn end_frame(&mut self) {
+    ///
+    /// Returns `false` if the frame was skipped because the surface had no image to draw into
+    /// (the window is minimized or hidden, or the surface is being repaired).
+    pub(crate) fn end_frame(&mut self) -> bool {
         let Frame::Ready(texture) = self.surface.acquire(&self.instance, &self.gpu.device) else {
-            return;
+            return false;
         };
         let device = &self.gpu.device;
         let queue = &self.gpu.queue;
@@ -182,6 +186,7 @@ impl Gfx {
         queue.submit([encoder.finish()]);
         self.surface.pre_present();
         queue.present(texture);
+        true
     }
 }
 

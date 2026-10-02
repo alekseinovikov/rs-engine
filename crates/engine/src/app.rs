@@ -129,7 +129,11 @@ where
         }
         ctx.gfx.begin_frame();
         running.game.draw(ctx);
-        ctx.gfx.end_frame();
+        if !ctx.gfx.end_frame() {
+            // Nothing could be shown (a minimized or hidden window): slow down instead of
+            // spinning. The game keeps simulating; the fixed ticks catch up every retry.
+            self.pacer.frame_skipped(now);
+        }
 
         if let Some(fps) = self.fps.record(frame_dt) {
             ctx.time.set_fps(fps);

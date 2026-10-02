@@ -1,6 +1,6 @@
 //! The frame limiter: when should the next frame start?
 //!
-//! Without vsync (we get it in M2) nothing slows the loop down, and an empty frame takes a few
+//! Without vsync nothing slows the loop down, and an empty frame takes a few
 //! microseconds, so the loop would spin at tens of thousands of frames per second and keep a CPU
 //! core at 100 %. With a limit of `n` frames per second, [`FramePacer`] computes the instant the
 //! next frame is due, and the app asks winit to sleep until then (`ControlFlow::WaitUntil`).
@@ -10,6 +10,10 @@
 //! little late every time; measuring from `now` would add that lateness to every frame and give,
 //! say, 58 FPS instead of 60. If we fall behind by more than a whole period (a stall), the
 //! schedule restarts from `now` instead of trying to catch up with a burst of frames.
+//!
+//! The pacer also backs off when a frame could not be shown at all, for example while the window
+//! is minimized or hidden behind another one: the GPU then reports at once that there is nothing
+//! to draw into, and without a pause the loop would spin a core at 100 % until the window is back.
 
 use std::time::{Duration, Instant};
 
@@ -27,6 +31,10 @@ pub(crate) fn frame_period(max_fps: Option<u32>) -> Option<Duration> {
         Duration::from_secs(1) / fps
     })
 }
+
+/// How long to wait after a frame that could not be shown before trying again. Short enough that
+/// the game reappears without a visible delay, long enough that a hidden window costs nothing.
+pub(crate) const SKIPPED_FRAME_RETRY: Duration = Duration::from_millis(100);
 
 /// Schedules frames under an optional frames-per-second limit.
 #[derive(Debug, Clone)]
@@ -70,6 +78,16 @@ impl FramePacer {
             _ => now + period,
         };
         self.next_frame = Some(next);
+    }
+
+    /// Tells the pacer that the frame started at `now` could not be shown, which delays the next
+    /// one by at least [`SKIPPED_FRAME_RETRY`]. Call it after [`FramePacer::frame_started`].
+    pub(crate) fn frame_skipped(&mut self, now: Instant) {
+        let retry = now + SKIPPED_FRAME_RETRY;
+        self.next_frame = Some(match self.next_frame {
+            Some(next) => next.max(retry),
+            None => retry,
+        });
     }
 
     /// The instant the next frame is due, or `None` if it is due immediately.
@@ -147,5 +165,33 @@ mod tests {
         pacer.frame_started(start);
         pacer.set_max_fps(Some(50));
         assert_eq!(pacer.next_frame(), Some(start + 20 * MS));
+    }
+
+    #[test]
+    fn a_skipped_frame_delays_the_next_one_without_a_limit() {
+        let now = Instant::now();
+        let mut pacer = FramePacer::new(None);
+        pacer.frame_started(now);
+        pacer.frame_skipped(now);
+        assert_eq!(pacer.next_frame(), Some(now + SKIPPED_FRAME_RETRY));
+
+        // A frame that is shown again runs the loop at full speed.
+        let later = now + SKIPPED_FRAME_RETRY;
+        pacer.frame_started(later);
+        assert_eq!(pacer.next_frame(), None);
+    }
+
+    #[test]
+    fn a_skipped_frame_waits_for_whichever_is_later() {
+        let now = Instant::now();
+        let mut fast = FramePacer::new(Some(60));
+        fast.frame_started(now);
+        fast.frame_skipped(now);
+        assert_eq!(fast.next_frame(), Some(now + SKIPPED_FRAME_RETRY));
+
+        let mut slow = FramePacer::new(Some(5));
+        slow.frame_started(now);
+        slow.frame_skipped(now);
+        assert_eq!(slow.next_frame(), Some(now + 200 * MS));
     }
 }

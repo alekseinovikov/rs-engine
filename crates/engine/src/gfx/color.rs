@@ -84,8 +84,9 @@ impl Color {
 /// The sRGB transfer function, inverted: an sRGB channel value to linear light.
 ///
 /// Near black the curve is a straight line (dividing by 12.92); above 0.04045 it is a power
-/// curve with exponent 2.4. The two pieces meet smoothly, which avoids an infinitely steep slope
-/// at zero.
+/// curve with exponent 2.4. The straight piece exists for the opposite direction: encoding uses
+/// the power 1/2.4, which would be infinitely steep at zero, so tiny dark values would be
+/// unstable. The two pieces meet (almost exactly) at the threshold.
 fn srgb_to_linear(c: f32) -> f32 {
     if c <= 0.04045 {
         c / 12.92

@@ -5,8 +5,8 @@
 //! two triangles that share two corners, so with indices it needs 4 vertices instead of 6:
 //!
 //! ```text
-//!  0 ──── 1      triangle A: 0, 1, 2
-//!  │ A  ╱ │      triangle B: 2, 1, 3
+//!  0 ──── 1      triangle A: 0, 2, 1
+//!  │ A  ╱ │      triangle B: 1, 2, 3
 //!  │  ╱ B │
 //!  2 ──── 3
 //! ```

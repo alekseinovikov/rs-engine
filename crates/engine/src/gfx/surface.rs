@@ -141,7 +141,7 @@ impl WindowSurface {
     pub(crate) fn acquire(&mut self, instance: &wgpu::Instance, device: &wgpu::Device) -> Frame {
         if self.needs_reconfigure {
             self.needs_reconfigure = false;
-            self.configure(device);
+            self.reconfigure_to_window(device);
         }
         // A minimized window has a zero size; wgpu cannot configure (and we cannot draw) a
         // zero-sized surface, so frames are skipped until the window is restored.
@@ -162,7 +162,7 @@ impl WindowSurface {
             }
             wgpu::CurrentSurfaceTexture::Outdated => {
                 log::debug!("surface outdated, reconfiguring");
-                self.configure(device);
+                self.reconfigure_to_window(device);
                 Frame::Skip
             }
             wgpu::CurrentSurfaceTexture::Lost => {
@@ -181,6 +181,16 @@ impl WindowSurface {
     /// before presenting. On Wayland this keeps frames in step with the display.
     pub(crate) fn pre_present(&self) {
         self.window.pre_present_notify();
+    }
+
+    /// Configures the surface for the window's size right now. The swapchain can go stale
+    /// before the `Resized` event arrives (on Linux especially), and configuring it with the
+    /// old size would only make it stale again.
+    fn reconfigure_to_window(&mut self, device: &wgpu::Device) {
+        let size = self.window.inner_size();
+        self.config.width = size.width;
+        self.config.height = size.height;
+        self.configure(device);
     }
 
     fn configure(&self, device: &wgpu::Device) {
