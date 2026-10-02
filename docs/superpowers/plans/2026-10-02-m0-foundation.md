@@ -692,7 +692,7 @@ git commit -m "Add the README and the MIT OR Apache-2.0 license" -m "Co-Authored
   `origin`, a `CI` workflow that runs on every push to `main` and on pull requests, and the open
   pull request `milestone/m0-foundation` → `main`.
 
-- [ ] **Step 1: Write the workflow**
+- [x] **Step 1: Write the workflow**
 
 Create `.github/workflows/ci.yml`:
 
@@ -740,7 +740,7 @@ jobs:
         run: cargo test --workspace
 ```
 
-- [ ] **Step 2: Commit the workflow**
+- [x] **Step 2: Commit the workflow**
 
 ```bash
 git add .github/workflows/ci.yml docs/superpowers/plans/2026-10-02-m0-foundation.md
