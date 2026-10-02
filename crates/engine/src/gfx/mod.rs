@@ -1,5 +1,8 @@
 //! Graphics: everything between the game's draw calls and the pixels on screen.
 
+// Used by the renderer from Task 6 on.
+#[allow(dead_code)]
+mod buffer;
 mod color;
 // The renderer that uses the batch arrives in Task 6; until then only the tests do.
 #[allow(dead_code)]
