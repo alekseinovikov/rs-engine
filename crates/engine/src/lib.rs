@@ -8,9 +8,11 @@
 //! together: `platformer` → `engine` → `ecs`.
 
 mod fps;
+mod input;
 mod pacing;
 mod time;
 
+pub use input::{Input, Key, MouseButton};
 pub use time::Time;
 
 /// The version of this crate, read from its `Cargo.toml` at compile time.
