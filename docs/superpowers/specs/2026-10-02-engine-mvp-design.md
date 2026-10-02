@@ -1,7 +1,7 @@
 # rs-engine MVP — Design Spec
 
 - **Date:** 2026-10-02
-- **Status:** Under review. §3 Architecture approved on 2026-10-02.
+- **Status:** Approved on 2026-10-02.
 - **Roadmap and status:** [ROADMAP.md](../../../ROADMAP.md)
 
 This is a living document: when a milestone settles a detail or changes a decision, update the
