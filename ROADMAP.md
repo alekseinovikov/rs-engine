@@ -4,14 +4,14 @@ The MVP is reached when the mini-platformer is playable from the title screen to
 screen on our own engine. Design and decision log:
 [docs/superpowers/specs/2026-10-02-engine-mvp-design.md](docs/superpowers/specs/2026-10-02-engine-mvp-design.md).
 
-**Current milestone:** M1 — Window, game loop, input (not started)
+**Current milestone:** M1 — Window, game loop, input (in progress)
 
 Legend: ⬜ not started · 🟨 in progress · ✅ done
 
 | # | Milestone | What you see at the end | Status |
 |---|---|---|---|
 | M0 | Foundation | `cargo run -p platformer` prints a greeting from the engine; all checks pass | ✅ |
-| M1 | Window, game loop, input | A window with FPS in its title; key presses in the log | ⬜ |
+| M1 | Window, game loop, input | A window with FPS in its title; key presses in the log | 🟨 |
 | M2 | Hello GPU | A cleared window and a colored triangle | ⬜ |
 | M3 | Sprite batching & camera | 10 000 moving rectangles; a panning, zooming camera | ⬜ |
 | M4 | Textures & pixel-perfect rendering | Crisp pixel-art sprites from an atlas at any window size | ⬜ |
