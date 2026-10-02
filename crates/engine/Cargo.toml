@@ -11,6 +11,7 @@ publish.workspace = true
 bytemuck.workspace = true
 ecs.workspace = true
 log.workspace = true
+pollster.workspace = true
 thiserror.workspace = true
 wgpu.workspace = true
 winit.workspace = true
