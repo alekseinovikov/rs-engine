@@ -21,6 +21,8 @@ publish = false
 [workspace.dependencies]
 ecs = { path = "crates/ecs" }
 engine = { path = "crates/engine" }
+# Windows and OS events (keyboard, mouse, resize, close) on every desktop platform.
+winit = "0.30"
 
 # Lints shared by all members; each member opts in with `[lints] workspace = true`.
 [workspace.lints.rust]

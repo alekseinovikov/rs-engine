@@ -10,6 +10,7 @@
 mod fps;
 mod input;
 mod pacing;
+mod platform;
 mod time;
 
 pub use input::{Input, Key, MouseButton};
