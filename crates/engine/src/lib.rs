@@ -7,12 +7,18 @@
 //! For now it only provides [`greeting`], which proves that the workspace crates are wired
 //! together: `platformer` → `engine` → `ecs`.
 
+mod config;
+mod context;
+mod error;
 mod fps;
 mod input;
 mod pacing;
 mod platform;
 mod time;
 
+pub use config::Config;
+pub use context::Context;
+pub use error::Error;
 pub use input::{Input, Key, MouseButton};
 pub use time::Time;
 

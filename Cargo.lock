@@ -276,6 +276,8 @@ name = "engine"
 version = "0.1.0"
 dependencies = [
  "ecs",
+ "log",
+ "thiserror 2.0.21",
  "winit",
 ]
 

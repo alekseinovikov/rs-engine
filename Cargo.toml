@@ -23,6 +23,10 @@ ecs = { path = "crates/ecs" }
 engine = { path = "crates/engine" }
 # Windows and OS events (keyboard, mouse, resize, close) on every desktop platform.
 winit = "0.30"
+# The logging facade: libraries call `log::info!`, the application picks the logger.
+log = "0.4"
+# `#[derive(Error)]` for the engine's error type.
+thiserror = "2"
 
 # Lints shared by all members; each member opts in with `[lints] workspace = true`.
 [workspace.lints.rust]

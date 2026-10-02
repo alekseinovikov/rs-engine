@@ -9,6 +9,8 @@ publish.workspace = true
 
 [dependencies]
 ecs.workspace = true
+log.workspace = true
+thiserror.workspace = true
 winit.workspace = true
 
 [lints]
