@@ -1,0 +1,24 @@
+# The workspace manifest. It has no [package] section of its own (a "virtual manifest"):
+# it lists the member crates and the settings they share.
+[workspace]
+resolver = "3"
+members = [
+    "crates/ecs",
+]
+
+# Package metadata that members inherit with `key.workspace = true`.
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/alekseinovikov/rs-engine"
+publish = false
+
+# Lints shared by all members; each member opts in with `[lints] workspace = true`.
+[workspace.lints.rust]
+# Our own code never uses `unsafe`. The level is `deny` rather than `forbid` so that a
+# narrowly scoped, documented `#[allow(unsafe_code)]` stays possible if a dependency's
+# derive macro ever generates an `unsafe impl`.
+unsafe_code = "deny"
+# Every public item gets a doc comment: in a learning codebase, docs are half the point.
+missing_docs = "warn"

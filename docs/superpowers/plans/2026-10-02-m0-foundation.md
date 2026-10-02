@@ -205,7 +205,7 @@ git commit -m "Start milestone M0" -m "Co-Authored-By: Claude Opus 5.5 <noreply@
 - Produces: `pub const ecs::VERSION: &str` (the `ecs` package version, today `"0.1.0"`), and a root
   `Cargo.toml` with `[workspace.package]` and `[workspace.lints.rust]` that Tasks 3 and 4 extend.
 
-- [ ] **Step 1: Pin the toolchain**
+- [x] **Step 1: Pin the toolchain**
 
 Create `rust-toolchain.toml`:
 
@@ -217,7 +217,7 @@ channel = "stable"
 components = ["rustfmt", "clippy"]
 ```
 
-- [ ] **Step 2: Create the workspace manifest**
+- [x] **Step 2: Create the workspace manifest**
 
 Create `Cargo.toml`:
 
@@ -248,7 +248,7 @@ unsafe_code = "deny"
 missing_docs = "warn"
 ```
 
-- [ ] **Step 3: Create the `ecs` crate**
+- [x] **Step 3: Create the `ecs` crate**
 
 Create `crates/ecs/Cargo.toml`:
 
@@ -286,7 +286,7 @@ Create `crates/ecs/src/lib.rs`:
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 ```
 
-- [ ] **Step 4: Build and check**
+- [x] **Step 4: Build and check**
 
 Run:
 
@@ -300,7 +300,7 @@ cargo clippy --workspace --all-targets -- -D warnings
 Expected: `Compiling ecs v0.1.0 (...)` followed by `Finished`; `cargo fmt --all --check` prints
 nothing; clippy finishes without warnings. A `Cargo.lock` file appears in the repository root.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add rust-toolchain.toml Cargo.toml Cargo.lock crates/ecs docs/superpowers/plans/2026-10-02-m0-foundation.md
